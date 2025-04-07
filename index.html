@@ -1,1 +1,63 @@
-Hello World
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+</head>
+<body>
+<div>Hello World</div>
+<div id="container">
+
+    <div id="debugger">
+    </div>
+    <div id="inside-container">
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    // execute alert after load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Your code here
+        console.log("Document is ready!");
+        alert("I'm domain http://problematic-domain.com:8080/ and downloading from localhost !! ");
+
+        fetch('http://localhost/php-config')
+            .then(response => {
+                console.log(response);
+                return response.text();
+            })
+            .then(data => {
+                // display data only in container div class
+                const container = document.getElementById('inside-container');
+                console.log(data);
+                container.innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        fetch('http://localhost/_debugbar/open')
+            .then(response => {
+                console.log(response);
+                return response.text();
+            })
+            .then(data => {
+                // display data only in container div class
+                const container = document.getElementById('debugger');
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const details = doc.querySelector('.details');
+                console.log(details);
+                container.innerHTML = details.outerHTML;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
+</script>
+</body>
+</html>
